@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
-import { fetchNotes } from "@/lib/api/notes";
+import { fetchNotes } from "@/lib/api";
 import { NOTE_TAGS } from "@/lib/constants";
 import type { NoteTag } from "@/types/note";
-import NotesClient from "../../Notes.client";
+import NotesClient from "./Notes.client";
 
 export const dynamic = "force-dynamic";
 
