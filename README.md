@@ -43,7 +43,7 @@
 - **Not found.** `app/not-found.tsx` показує сторінку 404 для неіснуючих маршрутів (також для невідомих тегів).
 - **Catch-all.** `app/notes/filter/[...slug]` обробляє `/notes/filter/all` та `/notes/filter/{tag}`. Для `all` параметр `tag` до API не передається.
 - **Паралельний маршрут.** `app/notes/filter/@sidebar` містить `SidebarNotes` — меню тегів. Layout `app/notes/filter/layout.tsx` отримує слот `sidebar`, тому при зміні тега змінюється лише область нотаток, а меню лишається на місці.
-- **Перехоплення маршруту.** `app/notes/@modal/(.)[id]` перехоплює перехід на `/notes/[id]` і показує `NotePreview` у `Modal` поверх поточного списку. Закриття (×, Esc, клік по фону) виконує `router.back()` і повертає на попередній URL, наприклад `/notes/filter/Work`.
+- **Перехоплення маршруту.** `app/@modal/(.)notes/[id]` перехоплює перехід на `/notes/[id]` і показує `NotePreview` у `Modal` поверх поточного списку. Закриття (×, Esc, клік по фону) виконує `router.back()` і повертає на попередній URL, наприклад `/notes/filter/Work`.
 
 ## SSR і CSR
 
@@ -58,16 +58,15 @@
 
 ```
 ├── app/
-│   ├── layout.tsx                  # глобальний layout: Header, Footer, TanStackProvider
+│   ├── layout.tsx                  # глобальний layout: Header, Footer, TanStackProvider, слот modal
 │   ├── not-found.tsx               # сторінка 404
+│   ├── @modal/                     # паралельний слот для модальних вікон
+│   │   ├── default.tsx
+│   │   └── (.)notes/[id]/          # перехоплений маршрут: NotePreview у Modal
 │   ├── page.tsx                    # головна сторінка (/)
 │   └── notes/
-│       ├── layout.tsx              # children + слот @modal
 │       ├── page.tsx                # redirect на /notes/filter/all
 │       ├── Notes.client.tsx        # CSR: useQuery, пошук, пагінація, створення
-│       ├── @modal/
-│       │   ├── default.tsx
-│       │   └── (.)[id]/            # перехоплений маршрут: NotePreview у Modal
 │       ├── filter/
 │       │   ├── layout.tsx          # sidebar + область нотаток
 │       │   ├── @sidebar/           # SidebarNotes (паралельний маршрут)
@@ -136,4 +135,4 @@
 - `app/not-found.tsx` показує сторінку 404.
 - `/notes/filter/all` і `/notes/filter/{tag}` фільтрують нотатки через параметр `tag` API; для `all` параметр не передається.
 - `app/notes/filter/@sidebar` реалізує паралельний слот меню тегів.
-- `app/notes/@modal/(.)[id]` перехоплює перехід до нотатки та показує її у модальному вікні. Закриття повертає до попереднього URL.
+- `app/@modal/(.)notes/[id]` перехоплює перехід до нотатки та показує її у модальному вікні. Закриття повертає до попереднього URL.
